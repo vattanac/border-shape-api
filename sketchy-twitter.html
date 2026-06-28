@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sketchy ✕ — Notebook UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── BASE ── */
+    body {
+      background: #f5f4ee;
+      font-family: 'Patrick Hand', cursive;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── LAYOUT ── */
+    .app {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════
+       LEFT SIDEBAR
+    ═══════════════════════════════════════ */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      padding: 20px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-right: 2.5px solid #1a1a1a;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: #f5f4ee;
+    }
+
+    .logo {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 34px;
+      margin-bottom: 18px;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 12px;
+      font-size: 17px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1a1a1a;
+      transition: background 0.12s, border-color 0.12s;
+      user-select: none;
+    }
+
+    .nav-item:hover {
+      background: #eae9e0;
+      border: 2px dashed #999;
+    }
+
+    .nav-item.active {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .nav-key {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 14px;
+      color: #888;
+      width: 16px;
+      text-align: center;
+    }
+
+    .post-btn {
+      margin-top: 14px;
+      background: #1a1a1a;
+      color: #f5f4ee;
+      border: 2.5px solid #1a1a1a;
+      padding: 13px 20px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 17px;
+      cursor: pointer;
+      width: 100%;
+      /* wobbly pill shape */
+      border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 3px 3px 0 #555;
+    }
+
+    .post-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 #333;
+    }
+
+    .post-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 #555;
+    }
+
+    /* ═══════════════════════════════════════
+       MAIN FEED
+    ═══════════════════════════════════════ */
+    .feed {
+      flex: 1;
+      border-right: 2.5px solid #1a1a1a;
+      min-width: 0;
+    }
+
+    /* Tabs */
+    .feed-tabs {
+      display: flex;
+      border-bottom: 2.5px solid #1a1a1a;
+      position: sticky;
+      top: 0;
+      background: rgba(245, 244, 238, 0.96);
+      backdrop-filter: blur(6px);
+      z-index: 20;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 15px 10px;
+      text-align: center;
+      font-size: 15px;
+      cursor: pointer;
+      border-bottom: 3.5px solid transparent;
+      border-right: 1px dashed #ccc;
+      transition: background 0.1s;
+      user-select: none;
+    }
+
+    .tab:last-child { border-right: none; }
+
+    .tab.active {
+      border-bottom-color: #1a1a1a;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .tab:hover:not(.active) { background: #edecea; }
+
+    /* Compose */
+    .compose {
+      display: flex;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 2.5px solid #1a1a1a;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 17px;
+      border: 2.5px solid #1a1a1a;
+      /* wobbly circle */
+      border-radius: 62% 38% 55% 45% / 48% 56% 44% 52%;
+    }
+
+    .avatar.sm {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+
+    .compose-right { flex: 1; }
+
+    .compose-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 18px;
+      color: #999;
+      padding-top: 6px;
+    }
+
+    .compose-input::placeholder { color: #bbb; }
+
+    .compose-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .compose-post {
+      background: #1a1a1a;
+      color: #f5f4ee;
+      border: 2px solid #1a1a1a;
+      padding: 8px 20px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%;
+      box-shadow: 2px 2px 0 #555;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .compose-post:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 #333;
+    }
+
+    /* Tweet */
+    .tweet {
+      padding: 16px 18px;
+      border-bottom: 2px solid #1a1a1a;
+      transition: background 0.1s;
+    }
+
+    .tweet:hover { background: #edecea; }
+
+    .tweet-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tweet-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tweet-name {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .tweet-handle { font-size: 14px; color: #888; }
+    .tweet-dot { color: #bbb; }
+    .tweet-time { font-size: 13px; color: #aaa; }
+
+    .tweet-body {
+      font-size: 16px;
+      line-height: 1.55;
+      color: #2a2a2a;
+      margin-bottom: 12px;
+    }
+
+    /* ── SKETCHY NESTED CARD ── */
+    .sketchy-card {
+      position: relative;
+      background: #fff;
+      border: 2.5px solid #1a1a1a;
+      border-radius: 4px 8px 5px 7px / 7px 4px 8px 4px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: 4px 4px 0 #1a1a1a;
+    }
+
+    /* outer dashed ring — the hand-drawn double border trick */
+    .sketchy-card::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border: 1.5px dashed #bbb;
+      border-radius: 6px 10px 7px 9px / 9px 6px 10px 6px;
+      pointer-events: none;
+    }
+
+    .nested-author {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .nested-handle { font-size: 13px; color: #999; margin-left: 4px; }
+    .nested-time { font-size: 12px; color: #bbb; }
+
+    .nested-body {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #444;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    /* Emoji face grid */
+    .faces-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 2.5px solid #1a1a1a;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 3px 3px 0 #1a1a1a;
+    }
+
+    .face-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 40px;
+    }
+
+    .face-cell:first-child {
+      background: #f0c060;
+      border-right: 2px solid #1a1a1a;
+    }
+
+    .face-cell:last-child { background: #c8b0e8; }
+
+    /* Big quote card */
+    .big-quote {
+      margin-top: 10px;
+      background: #e5e4da;
+      border: 2.5px solid #1a1a1a;
+      border-radius: 4px 8px 5px 7px / 7px 4px 8px 4px;
+      padding: 22px 18px;
+      box-shadow: 4px 4px 0 #1a1a1a;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 1.4;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+
+    /* Action bar */
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px;
+      color: #888;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: color 0.1s, background 0.1s;
+    }
+
+    .action:hover {
+      color: #1a1a1a;
+      background: #e0dfd5;
+    }
+
+    .action-save {
+      margin-left: auto;
+      font-family: 'Caveat', cursive;
+      font-size: 15px;
+      color: #777;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .action-save:hover {
+      color: #1a1a1a;
+      text-decoration: underline wavy #888;
+      background: #e0dfd5;
+    }
+
+    /* ═══════════════════════════════════════
+       RIGHT SIDEBAR
+    ═══════════════════════════════════════ */
+    .right-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 15px;
+      background: #fff;
+      border: 2.5px solid #1a1a1a;
+      border-radius: 5px 9px 6px 8px / 8px 5px 9px 5px;
+      outline: none;
+      box-shadow: 2px 2px 0 #ccc;
+      transition: box-shadow 0.15s;
+    }
+
+    .search-input:focus { box-shadow: 2px 2px 0 #1a1a1a; }
+
+    /* Widget box */
+    .widget {
+      border: 2.5px solid #1a1a1a;
+      border-radius: 4px 8px 5px 7px / 7px 4px 8px 4px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 3px 3px 0 #1a1a1a;
+    }
+
+    .widget-title {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 21px;
+      padding: 12px 14px;
+      border-bottom: 2px solid #1a1a1a;
+      background: #f5f4ee;
+    }
+
+    /* News items */
+    .news-item {
+      padding: 10px 14px;
+      border-bottom: 1.5px dashed #ccc;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .news-item:last-child { border-bottom: none; }
+    .news-item:hover { background: #f0efe5; }
+
+    .news-dots {
+      display: inline-flex;
+      gap: 3px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .news-headline {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .news-meta { font-size: 12px; color: #999; }
+
+    /* Trend items */
+    .trend-item {
+      padding: 10px 14px;
+      border-bottom: 1.5px dashed #ccc;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .trend-item:last-child { border-bottom: none; }
+    .trend-item:hover { background: #f0efe5; }
+
+    .trend-context { font-size: 12px; color: #999; margin-bottom: 2px; }
+
+    .trend-name {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .show-more {
+      padding: 12px 14px;
+      color: #4466cc;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .show-more:hover { text-decoration: underline wavy #4466cc; }
+
+    /* Follow items */
+    .follow-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1.5px dashed #ccc;
+    }
+
+    .follow-item:last-child { border-bottom: none; }
+
+    .follow-info { flex: 1; min-width: 0; }
+
+    .follow-name {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .follow-handle { font-size: 12px; color: #999; }
+
+    .follow-btn {
+      background: #1a1a1a;
+      color: #f5f4ee;
+      border: 2px solid #1a1a1a;
+      padding: 6px 14px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 35% 65% 40% 60% / 55% 45% 60% 40%;
+      box-shadow: 2px 2px 0 #555;
+      flex-shrink: 0;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .follow-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 #333;
+    }
+
+    .footer-links {
+      font-size: 11px;
+      color: #bbb;
+      line-height: 2;
+      padding: 0 2px;
+    }
+
+    .footer-links a {
+      color: #bbb;
+      text-decoration: none;
+      margin-right: 8px;
+    }
+
+    .footer-links a:hover {
+      color: #888;
+      text-decoration: underline;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .right-sidebar { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .sidebar { width: 60px; padding: 16px 8px; }
+      .nav-item span:not(.nav-key) { display: none; }
+      .logo { font-size: 22px; }
+      .post-btn { font-size: 0; padding: 13px; }
+      .post-btn::after { content: '+'; font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══════════════════════════════
+       LEFT SIDEBAR
+  ══════════════════════════════ -->
+  <nav class="sidebar">
+    <div class="logo">✕</div>
+
+    <a class="nav-item active">
+      <span class="nav-key">H</span><span>Home</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">Q</span><span>Explore</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">N</span><span>Notifications</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">C</span><span>Chat</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">G</span><span>SuperGrok</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">P</span><span>Premium+</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">B</span><span>Bookmarks</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">S</span><span>Creator Studio</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">A</span><span>Articles</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">U</span><span>Profile</span>
+    </a>
+    <a class="nav-item">
+      <span class="nav-key">M</span><span>More</span>
+    </a>
+
+    <button class="post-btn">Post</button>
+  </nav>
+
+  <!-- ══════════════════════════════
+       MAIN FEED
+  ══════════════════════════════ -->
+  <main class="feed">
+
+    <!-- Tabs -->
+    <div class="feed-tabs">
+      <div class="tab active">For you</div>
+      <div class="tab">Following</div>
+      <div class="tab">AI Video &amp; Filmmakers</div>
+    </div>
+
+    <!-- Compose box -->
+    <div class="compose">
+      <div class="avatar" style="background:#f0c060;">Y</div>
+      <div class="compose-right">
+        <input class="compose-input" type="text" placeholder="What's happening?" />
+        <div class="compose-actions">
+          <button class="compose-post">Post</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TWEET 1 ── -->
+    <article class="tweet">
+      <div class="tweet-header">
+        <div class="avatar" style="background:#a8c8f8;">N</div>
+        <div class="tweet-meta">
+          <span class="tweet-name">Nora Sketch</span>
+          <span class="tweet-handle">@norasketch</span>
+          <span class="tweet-dot">·</span>
+          <span class="tweet-time">3h</span>
+        </div>
+      </div>
+
+      <p class="tweet-body">
+        Spent the morning testing tighter hand-drawn borders. The square corners feel more like wireframes, while the soft corners make every panel look like it belongs in a notebook.
+      </p>
+
+      <!-- Nested/quoted card -->
+      <div class="sketchy-card">
+        <div>
+          <span class="nested-author">Design Notes</span>
+          <span class="nested-handle">@designnotes</span>
+          <span class="nested-handle">· 11h</span>
+        </div>
+        <p class="nested-body">
+          A small UI study compares straight borders, rounded borders, and gently wobbly borders for dashboard cards.
+        </p>
+        <div class="faces-grid">
+          <div class="face-cell">:–)</div>
+          <div class="face-cell">:D</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="action">💬 20</button>
+        <button class="action">🔁 28</button>
+        <button class="action">❤️ 465</button>
+        <button class="action">📊 30K</button>
+        <button class="action-save">Save</button>
+      </div>
+    </article>
+
+    <!-- ── TWEET 2 ── -->
+    <article class="tweet">
+      <div class="tweet-header">
+        <div class="avatar" style="background:#f0a8c8;">b</div>
+        <div class="tweet-meta">
+          <span class="tweet-name">Dev Garden</span>
+          <span class="tweet-handle">@devgarden</span>
+          <span class="tweet-dot">·</span>
+          <span class="tweet-time">16h</span>
+        </div>
+      </div>
+
+      <p class="tweet-body">
+        Today I learned that tiny CSS variables can make a whole page feel more adjustable. One value for wobble, one value for corners, and suddenly the sketch style is much easier to tune.
+      </p>
+
+      <div class="big-quote">
+        border-shape demo notes: keep the lines subtle, make the corners intentional, and let the content stay readable.
+      </div>
+
+      <div class="actions">
+        <button class="action">💬 136</button>
+        <button class="action">🔁 377</button>
+        <button class="action">❤️ 6.6K</button>
+        <button class="action">📊 217K</button>
+        <button class="action-save">Save</button>
+      </div>
+    </article>
+
+    <!-- ── TWEET 3 ── -->
+    <article class="tweet">
+      <div class="tweet-header">
+        <div class="avatar" style="background:#b0e8c0;">M</div>
+        <div class="tweet-meta">
+          <span class="tweet-name">Mila Marks</span>
+          <span class="tweet-handle">@milamarks</span>
+          <span class="tweet-dot">·</span>
+          <span class="tweet-time">15h</span>
+        </div>
+      </div>
+
+      <p class="tweet-body">
+        Morning checklist: coffee, a quick layout pass, and one surprisingly satisfying squiggle around the search box.
+      </p>
+
+      <div class="actions">
+        <button class="action">💬 113</button>
+        <button class="action">🔁 434</button>
+        <button class="action">❤️ 13K</button>
+        <button class="action">📊 232K</button>
+        <button class="action-save">Save</button>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ══════════════════════════════
+       RIGHT SIDEBAR
+  ══════════════════════════════ -->
+  <aside class="right-sidebar">
+    <input class="search-input" type="text" placeholder="Search" />
+
+    <!-- Today's News -->
+    <div class="widget">
+      <div class="widget-title">Today's News</div>
+
+      <div class="news-item">
+        <div class="news-headline">Local Design Meetup Announces Spring Workshop Schedule</div>
+        <div class="news-meta">
+          <span class="news-dots">
+            <span class="dot" style="background:#e05050"></span>
+            <span class="dot" style="background:#e0a020"></span>
+            <span class="dot" style="background:#30b050"></span>
+          </span>
+          15 hours ago · News · 486 posts
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-headline">New CSS Demo Shows Hand-Drawn Borders with Custom Properties</div>
+        <div class="news-meta">
+          <span class="news-dots">
+            <span class="dot" style="background:#e05050"></span>
+            <span class="dot" style="background:#e0a020"></span>
+            <span class="dot" style="background:#30b050"></span>
+          </span>
+          23 hours ago · Web · 9,947 posts
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-headline">Sketchy UI Trend Brings Notebook Energy to Dashboards</div>
+        <div class="news-meta">
+          <span class="news-dots">
+            <span class="dot" style="background:#e05050"></span>
+            <span class="dot" style="background:#e0a020"></span>
+            <span class="dot" style="background:#30b050"></span>
+          </span>
+          Trending now · Design · 148 posts
+        </div>
+      </div>
+    </div>
+
+    <!-- What's Happening -->
+    <div class="widget">
+      <div class="widget-title">What's happening</div>
+
+      <div class="trend-item">
+        <div class="trend-context">Trending in Design</div>
+        <div class="trend-name">Sketchy Borders</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-context">CSS · Trending</div>
+        <div class="trend-name">border-shape</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-context">Trending in Frontend</div>
+        <div class="trend-name">Custom Properties</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-context">Trending in UI</div>
+        <div class="trend-name">Notebook Layouts</div>
+      </div>
+
+      <div class="show-more">Show more</div>
+    </div>
+
+    <!-- Who to Follow -->
+    <div class="widget">
+      <div class="widget-title">Who to follow</div>
+
+      <div class="follow-item">
+        <div class="avatar sm" style="background:#b0e8c0;">R</div>
+        <div class="follow-info">
+          <div class="follow-name">Ryan Kaufman</div>
+          <div class="follow-handle">@ryankaufman</div>
+        </div>
+        <button class="follow-btn">Follow</button>
+      </div>
+
+      <div class="follow-item">
+        <div class="avatar sm" style="background:#f0a8a8;">A</div>
+        <div class="follow-info">
+          <div class="follow-name">Andrew Clark</div>
+          <div class="follow-handle">@acdlite</div>
+        </div>
+        <button class="follow-btn">Follow</button>
+      </div>
+
+      <div class="follow-item">
+        <div class="avatar sm" style="background:#a8c8f8;">B</div>
+        <div class="follow-info">
+          <div class="follow-name">Brooklynl</div>
+          <div class="follow-handle">@imbabybrooklyn</div>
+        </div>
+        <button class="follow-btn">Follow</button>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Cookie Policy</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Ads info</a>
+      <a href="#">More</a>
+      <br>2026 X Corp.
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>
