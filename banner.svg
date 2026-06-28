@@ -1,0 +1,88 @@
+<svg width="680" height="340" viewBox="0 0 680 340" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>CSS border-shape API banner</title>
+  <desc>A GitHub README banner showing the CSS border-shape API with a before/after comparison of normal vs wobbly borders, in a sketchy notebook aesthetic.</desc>
+
+  <!-- Background: warm paper -->
+  <rect width="680" height="340" fill="#f5f4ee"/>
+
+  <!-- Ruled notebook lines -->
+  <line x1="0" y1="60"  x2="680" y2="60"  stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="90"  x2="680" y2="90"  stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="120" x2="680" y2="120" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="150" x2="680" y2="150" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="180" x2="680" y2="180" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="210" x2="680" y2="210" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="240" x2="680" y2="240" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="270" x2="680" y2="270" stroke="#e0ddd0" stroke-width="1"/>
+  <line x1="0" y1="300" x2="680" y2="300" stroke="#e0ddd0" stroke-width="1"/>
+
+  <!-- Margin red line -->
+  <line x1="60" y1="0" x2="60" y2="340" stroke="#f0b8b0" stroke-width="1.5"/>
+
+  <!-- Top header band -->
+  <rect x="0" y="0" width="680" height="52" fill="#1a1a1a"/>
+  <text x="340" y="33" text-anchor="middle" font-family="'Caveat', Georgia, cursive" font-weight="700" font-size="26" fill="#f5f4ee" letter-spacing="1">CSS border-shape API</text>
+  <text x="340" y="48" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#aaa8a0" letter-spacing="2">the complete guide · draw wobbly borders with pure css</text>
+
+  <!-- Main title -->
+  <text x="340" y="100" text-anchor="middle" font-family="'Caveat', Georgia, cursive" font-weight="700" font-size="48" fill="#1a1a1a">border-shape</text>
+  <text x="340" y="126" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="16" fill="#666">Make your borders wobbly, wavy, and hand-drawn — with one CSS property</text>
+
+  <!-- Yellow underline under title -->
+  <path d="M 190,132 Q 250,136 340,133 Q 430,130 490,134" fill="none" stroke="#f0c060" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- BEFORE label -->
+  <text x="168" y="158" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#999">before</text>
+  <!-- Normal card -->
+  <rect x="80" y="164" width="176" height="90" rx="4" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="168" y="192" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#888">.card {</text>
+  <text x="168" y="210" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#888">  border: 2px solid;</text>
+  <text x="168" y="228" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#888">}</text>
+  <text x="168" y="246" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="11" fill="#bbb">plain, boring, square</text>
+
+  <!-- Arrow -->
+  <line x1="282" y1="209" x2="384" y2="209" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+  <polyline points="376,201 387,209 376,217" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="302" y="194" width="62" height="20" rx="10" fill="#f0c060"/>
+  <text x="333" y="208" text-anchor="middle" font-family="'Caveat', Georgia, cursive" font-weight="700" font-size="13" fill="#7a5c00">+ border-shape</text>
+
+  <!-- AFTER label -->
+  <text x="512" y="158" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#1a1a1a">after</text>
+
+  <!-- Wobbly card -->
+  <path d="M 424,167 Q 448,163 468,166 Q 492,169 512,165 Q 532,161 552,165 Q 572,169 592,165 Q 608,162 600,168 L 602,244 Q 588,248 572,245 Q 552,241 532,245 Q 512,249 492,245 Q 472,241 452,245 Q 436,248 424,244 Z" fill="#fff" stroke="#1a1a1a" stroke-width="2.5"/>
+  <!-- Dashed outer ring -->
+  <path d="M 418,162 Q 448,157 472,161 Q 496,165 512,160 Q 532,155 556,160 Q 576,165 598,160 Q 614,157 608,164 L 610,250 Q 594,255 572,251 Q 548,246 524,251 Q 504,256 480,251 Q 460,246 440,251 Q 424,255 416,250 Z" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- Code inside wobbly card -->
+  <text x="512" y="192" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#1a1a1a">.card {</text>
+  <text x="512" y="210" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#378ADD">  border-shape: path(</text>
+  <text x="512" y="226" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="11" fill="#378ADD">'M 0,4 Q 50,0 100,4...'</text>
+  <text x="512" y="242" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#1a1a1a">}</text>
+
+  <!-- Feature pills -->
+  <rect x="80"  y="274" width="120" height="28" rx="14" fill="#1a1a1a"/>
+  <text x="140" y="293" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#f5f4ee">Pure CSS</text>
+
+  <rect x="212" y="274" width="120" height="28" rx="14" fill="#c8b0e8"/>
+  <text x="272" y="293" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#26215C">Animatable</text>
+
+  <rect x="344" y="274" width="120" height="28" rx="14" fill="#f0c060"/>
+  <text x="404" y="293" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#7a5c00">Responsive</text>
+
+  <rect x="476" y="274" width="124" height="28" rx="14" fill="#a8e8c0"/>
+  <text x="538" y="293" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="13" fill="#0F6E56">No JS needed</text>
+
+  <!-- Notebook page curl top-right -->
+  <polygon points="646,0 680,0 680,34" fill="#e0ddd0"/>
+  <line x1="646" y1="0" x2="680" y2="34" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Pencil doodle left margin -->
+  <line x1="34" y1="80" x2="46" y2="50" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="34,80 30,88 42,84" fill="#888"/>
+  <rect x="43" y="46" width="6" height="8" rx="1" fill="#f0c060" stroke="#888" stroke-width="1"/>
+
+  <!-- Bottom strip -->
+  <rect x="0" y="320" width="680" height="20" fill="#1a1a1a" opacity="0.06"/>
+  <text x="340" y="335" text-anchor="middle" font-family="'Patrick Hand', Arial, sans-serif" font-size="12" fill="#999">github.com/your-username/css-border-shape-guide</text>
+</svg>

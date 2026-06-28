@@ -2,7 +2,7 @@
 
 > **Draw wobbly, sketchy, hand-drawn borders with pure CSS — no images, no SVG hacks, no JavaScript.**
 
-![border-shape demo banner](https://raw.githubusercontent.com/your-username/border-shape-demo/main/assets/banner.png)
+![border-shape demo banner](banner.svg)
 
 ---
 
